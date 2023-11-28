@@ -1,7 +1,8 @@
 package br.com.unifalmg.blog.entity;
 
+
 import lombok.*;
-import java.util.List;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -11,22 +12,24 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(schema = "db", name = "post")
-public class Post implements Serializable {
+@Table(schema = "db2022108016", name = "comment")
+public class Comment implements Serializable {
 
     @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String title;
+    private String name;
+
+    private String email;
 
     private String body;
 
     @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
+
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    // TODO: Add a list of comments
-    @OneToMany(mappedBy = "post")
-    private List<Comment> comments;
-
 }
