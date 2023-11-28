@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.List;
 
 import java.util.Optional;
 
@@ -57,5 +58,29 @@ public class UserServiceTest {
     }
 
     // TODO: Implement test cases for getAllUsers
+    @Test
+    @DisplayName("#getAllUsers > When don`t have any users > return an Empty List")
+    void getAllUserswhendonthaveanyusersreturnanEmptyList(){
+        List<User> have = service.getAllUsers();
+        Assertions.assertTrue(have.isEmpty());
+    }
 
+    @Test
+    @DisplayName("#getAllUsers > When have some users > return all Users")
+    void getAllUsersWhenhavesomeusersReturnallUsers(){
+        when(service.getAllUsers().thenReturn(List.of(User.builder()
+                                .id(1)
+                                .name("Otávio")
+                                .username("otah")
+                                .build())));
+    List<User> have = service.getAllUsers();
+    Assertions.assertAll(
+           () -> Assertions.assertEquals(1,have.get(0).getId()),
+           () -> Assertions.assertEquals("Otávio",have.get(0).getName()),
+           () -> Assertions.assertEquals("otah",have.get(0).getUsername())
+    );
+    }
 }
+
+
+
