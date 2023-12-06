@@ -4,6 +4,7 @@ import br.com.unifalmg.blog.entity.User;
 import br.com.unifalmg.blog.exception.UserNotFoundException;
 import br.com.unifalmg.blog.repository.UserRepository;
 import br.com.unifalmg.blog.service.UserService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,5 +59,26 @@ public class UserServiceTest {
     }
 
     // TODO: Implement test cases for getAllUsers
+    @Test
+    @DisplayName("#getAllUsers > When there are no registered users > Returns an empty list")
+    void getAllUsersWhenThereAreNoRegisteredUsersReturnsAnEmptyList(){
+        List<User> response = service.getAllUsers();
+        Assertions.assertTrue(response.isEmpty());
+    }
+    @Test
+    @DisplayName("#getAllUsers > When there are registered users > Returns the list of users")
+    void getAllUsersWhenThereAreRegisteredUsersReturnsTheListOfUsers(){
+        when(service.getAllUsers()).thenReturn(List.of(User.builder()
+                .id(1)
+                .name("Leandro")
+                .username("leandroka")
+                .build()));
+        List<User> response = service.getAllUsers();
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(1,response.get(0).getId()),
+                () -> Assertions.assertEquals("otavio",response.get(0).getName()),
+                () -> Assertions.assertEquals("otah",response.get(0).getUsername())
 
+        );
+    }
 }
