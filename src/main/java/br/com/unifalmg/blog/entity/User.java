@@ -3,6 +3,7 @@ package br.com.unifalmg.blog.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.xml.stream.events.Comment;
 import java.io.Serializable;
 import java.util.List;
 
@@ -31,5 +32,9 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
+
 
 }

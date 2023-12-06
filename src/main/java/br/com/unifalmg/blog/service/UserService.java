@@ -9,13 +9,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class UserService {
 
     private final UserRepository repository;
+
+    public UserService(UserRepository repository) {
+        this.repository = repository;
+    }
 
     public List<User> getAllUsers() {
         return repository.findAll();
@@ -33,10 +36,26 @@ public class UserService {
 
     public User add(User user) {
         if (Objects.isNull(user) || Objects.isNull(user.getName())
-                || Objects.isNull(user.getUsername()) || Objects.isNull(user.getEmail())) {
+                || Objects.isNull(user.getUsername()) || Objects.isNull(user.getEmail()) || user.getName().isEmpty()
+                || user.getUsername().isEmpty() || user.getEmail().isEmpty() || user.getWebsite().isEmpty()) {
             throw new InvalidUserException();
         }
         return repository.save(user);
+    }
+    public void deleteById(Integer id) {
+        repository.deleteById(id);
+    }
+
+    public User update(Integer id, User user) {
+
+        User editedUser = repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+        editedUser.setName(user.getName());
+        editedUser.setUsername(user.getUsername());
+        editedUser.setEmail(user.getEmail());
+        editedUser.setWebsite(user.getWebsite());
+        editedUser.setPhone(user.getPhone());
+        return repository.save(editedUser);
     }
 
 }

@@ -3,7 +3,9 @@ package br.com.unifalmg.blog.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.xml.stream.events.Comment;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,7 +26,9 @@ public class Post implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     // TODO: Add a list of comments
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments;
 
 }
